@@ -1,0 +1,13 @@
+package.json에 devDependencies에 설치되는 라이브러리는 개발할 때 사용되는 것으로
+배포될 때는 추가되지 않는다.
+
+public폴더에는 사진이나,동영상, 폰트 등 정적인 파일들이 저장되는 곳
+src : 리액트나 자바스크립트의 코드들이 보관되는 곳
+src -asset 내에도 사진이 저장된다.
+
+------------------------------------------------------------
+react의 구동원리
+npm run dev를 할경우 reat app에 있는 web server가 실행이 되며, 이 서버의 주소가 npm run dev시 나옴
+
+리액트가 실행이 되면 index.html을 보냄
+app.jsx의 html 태그나 js설정이 main.jsx를 통해 index.html로 전달되어 브라우저에서 볼 수 있다.
