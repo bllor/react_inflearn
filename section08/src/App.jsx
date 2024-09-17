@@ -15,13 +15,13 @@ const mockData=[
   {
     id:1,
     isDone: false,
-    content: "React 공부하기",
+    content: "빨래하기",
     date: new Date().getTime(),
   },
   {
     id:2,
     isDone: false,
-    content: "React 공부하기",
+    content: "노래부르기",
     date: new Date().getTime(),
   }
 
@@ -39,11 +39,26 @@ function App() {
     }
     setTodos([newTodo,...todos])
   }
+
+  const onUpdate = (targetId)=>{
+    setTodos(todos.map((todo)=>{
+      if(todo.id  === targetId){
+        return{
+          ...todo,
+          isDone: !todo.isDone
+        }
+      }
+      return todo
+    }))
+  }
+
+
+
   return (
     <div className = 'App'>
       <Header/>
       <Editor onCreate={onCreate}/>
-      <List/>
+      <List todos ={todos} onUpdate={onUpdate}/>
     </div>
   )
 }
