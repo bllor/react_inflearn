@@ -1,4 +1,4 @@
-import Button from "./button"
+import Button from "./Button"
 import './DiaryList.css'
 import DiaryItem from "./DiaryItem"
 import { useNavigate } from "react-router-dom"

@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import Button from "../components/button";
+import Button from "../components/Button";
 import Viewer from "../components/Viewer";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";

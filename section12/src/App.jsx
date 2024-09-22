@@ -6,7 +6,6 @@ import Edit from './pages/Edit'
 import Notfound from './pages/Notfound'
 import { Routes,Route, Link, useNavigate } from 'react-router-dom'
 import { getEmotionImage } from './util/get-emotion-image'
-import Button from './components/button'
 import Header from './components/Header'
 import { useReducer ,useRef, createContext} from 'react'
 
