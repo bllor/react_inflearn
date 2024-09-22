@@ -1,0 +1,107 @@
+React
+
+useRef : 컴포넌트 내부의 변수로 활용되며, 변경 시 리랜더링을 유발하지 않아 초기화 되지 않아서
+id값 등을 가질 수 있다.
+
+const idRef = useRef(3)은 useRef의 초기값을 3으로 한다는 것.
+idRef.current++은  useRef로 정해준 값을 +1만큼 함.
+current를 사용하는 이유는 useRef에서 값을 참조하고 업데이트할 때 항상 current속성을 통해 접근해야 하기 때문이다.
+
+useEffect는 변수가 변할 때마다 실행되는 리액트 훅이다.
+useEffect(()=>{},[var])
+var변경시 {}내부의 함수가 실행이 된다.
+마운트 될 때 실행하고 싶으면 useEffect(()=>{},[])로 var를 빈값으로,
+
+컴포넌트가 마운트 되거나 업데이트 될 때만 실행하고 싶으면
+const isMount = useRef(false);
+useEffect(()=>{
+if(isMount.current){
+isMount.current = true;
+return;}
+});
+isMount.current값이 true가 되면 쓸 수 있다.
+언마운트 일 때 사용하고 싶으면
+useEffect(()=>{
+return ()=>{function}
+},[])
+return 다음에 Callback함수를 사용하면 된다.
+
+
+useReducer는 컴포넌트 내부에 새로운 state를 생성하는 react hook
+const [state, dispatch] = useReducer(reducer, initialState);
+state는 현재 상태값을 나타낸다.
+dispatch는 상태를 업데이트 하기 위한 함수
+reducer는 상태업데이트 로직을 담고 있는 함수로 현재 상태값을 나타내는 state
+,상태를 어떻게 업데이트할지 정하는 action객체를 받습니다.
+initialState는 초기 state값입니다.
+reducer는 다음과 같이 사용됩니다.
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'create':
+      return [action.data, ...state];  // 새 항목을 추가한 새 상태를 반환
+    default:
+      return state;  // 기본적으로 현재 상태를 그대로 반환
+  }
+}
+  const onCreate = (content)=>{
+    dispatch({
+      type: "create",
+      data :{
+        id: idRef.current++,
+        isDone : false,
+        content : content,
+        date : new Date().getTime()
+      }
+    })
+  }
+
+onCreate함수가 실행되면 dispatch를 호출하며, 새로운 데이터를 action객체로 하여 reducer보냅니다.
+(dispatch는 useReducer를 통해 reducer와 연결이되며, dispatch가 호출되면 자동으로 reducer가 실행된다.)
+reducer에서는 action객체에 따라 데이터가 변경되며, return되는 값이 새로운 state가 됩니다.
+
+
+useCallback : 함수를 메모이제이션하여 성능을 최적화하는데 사용된다.
+
+
+  const onCreate = useCallback((content)=>{
+    dispatch({
+      type: "create",
+      data :{
+        id: idRef.current++,
+        isDone : false,
+        content : content,
+        date : new Date().getTime()
+      }
+    })
+  },[]);
+<Editor onCreate={onCreate}/>
+
+의존성 배열에 빈배열이 전달될경우, 처음 랜더링될 때만 생성되고 이후에는 다시 랜더링 되지 않습니다.
+onCreate함수가 호출될 때만 실행되어 새로운 할 일을 추가하는 로직이 실행됩니다.
+
+
+useMemo는 주어진 계산이 필요할 때만 해당 값을 다시 계산하고, 이전 계산 결과를 재사용합니다.
+
+const memoValue = useMemo(()=>{
+return ExpensiveValue(a,b)
+},[a,b])
+a와 b의 값이 변경될 때만 expensvieValue함수값을 반환
+
+
+  const onCreate = useCallback((content)=>{
+    dispatch({
+      type: "create",
+      data :{
+        id: idRef.current++,
+        isDone : false,
+        content : content,
+        date : new Date().getTime()
+      }
+    })
+  },[]);
+  const memorizedDispatch = useMemo(()=>{
+    return {onCreate,onUpdate,onDelete}
+  },[])
+      <TodoDispatchContext.Provider value={memorizedDispatch}>
+다음과 같이 쓰는 이유는 context가 업데이트 될 때 모든 함수가 업데이트 되는 것을 예방.
