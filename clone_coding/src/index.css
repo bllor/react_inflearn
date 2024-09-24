@@ -3,8 +3,9 @@
   src: url("/NanumPenScript-Regular.ttf");
 }
 
-body *{
+body,html {
   font-family: "NanumPenScript";
+  display: flex;
   
 }
 
