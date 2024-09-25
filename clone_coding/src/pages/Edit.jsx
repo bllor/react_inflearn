@@ -5,29 +5,15 @@ import Header from "../component/Header"
 import { DiaryStateContext } from "../App"
 import { DiaryDispatchContext } from "../App"
 import { useContext, useEffect , useState } from "react"
+import useDiary from "../hook/useDiary"
 
 const Edit = ()=>{
     const params = useParams();
-    const data = useContext(DiaryStateContext);
-
-    const getCurrentDiaryItem = ()=>{
-        
-        
-    }
-
-    useEffect(()=>{
-        const currentDiaryItem =  data.find((item)=>String(item.id)===String(params.id))
-        if(!currentDiaryItem){
-            window.alert("존재하지 않는 일기입니다.")
-            nav('/',{replace:true})
-        }
-        setCurDiaryItem(currentDiaryItem);
-    },[params.id, data])
-
-    const [curDiaryItem, setCurDiaryItem] = useState();
-
+    
+    const curDiaryItem = useDiary(params.id);
     const nav = useNavigate();
     const {onDelete} = useContext(DiaryDispatchContext);
+    const {onUpdate} = useContext(DiaryDispatchContext);
 
     const onClickDelete = ()=>{
         if(window.confirm("일기를 정말 삭제할까요? 다시 복구되지 않아요")){
@@ -36,7 +22,14 @@ const Edit = ()=>{
         }
     };
 
-    const currentDiaryItem = getCurrentDiaryItem();
+
+
+    const onSubmit = (input)=>{
+        if(window.confirm('일기를 정말 수정할까요?')){
+
+        onUpdate(params.id, input.createdDate.getTime(), input.emotionId, input.content)
+            }
+        }
 
     return(
         <div>
@@ -48,7 +41,7 @@ const Edit = ()=>{
                 onClick={onClickDelete}
                 text={'삭제하기'} type={"NEGATIVE"}/>}
             />
-            <Editor initData = {curDiaryItem}/>
+            <Editor initData = {curDiaryItem} onSubmit={onSubmit}/>
         </div>
     )
 }

@@ -2,28 +2,9 @@ import { useEffect, useState } from 'react';
 import Button from './Button';
 import './Editor.css'
 import EmotionItem from './EmotionItem';
+import { EmotionList } from '../util/constants';
+import { stringedDate } from '../util/getStringedDate';
 
-const EmotionList = [
-    {emotionId:1, emotionName:"완전좋음"},
-    {emotionId:2, emotionName:"좋음"},
-    {emotionId:3, emotionName:"그럭저럭"},
-    {emotionId:4, emotionName:"나쁨"},
-    {emotionId:5, emotionName:"끔찍함"},
-]
-
-const stringedDate = (targetDate)=>{
-    let year = targetDate.getFullYear();
-    let month = targetDate.getMonth()+1;
-    let date = targetDate.getDate();
-
-    if(month<10){
-        month  = `0${month}`;
-    }
-    if(date<10){
-        date  = `0${date}`;
-    }
-    return `${year}-${month}-${date}`;
-}
 
 
 const Editor = ({initData, onSubmit})=>{
@@ -52,7 +33,9 @@ const Editor = ({initData, onSubmit})=>{
         }
     },[initData])
 
-
+    const onClickSubmitButton = ()=>{
+        onSubmit(input)
+    }
     return(
         <div className='Editor'>
             <div className='date_section'>
@@ -88,7 +71,9 @@ const Editor = ({initData, onSubmit})=>{
             </div>
             <div className='button_section'>
                 <Button text={'취소하기'}/>
-                <Button text={'작성하기'} type={"POSITIVE"}/>
+                <Button 
+                onClick={onClickSubmitButton}
+                text={'작성하기'} type={"POSITIVE"}/>
             </div>
         </div>
     )
